@@ -17,7 +17,6 @@ function generateId(): string {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
   }
-  // Fallback
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
     const v = c === "x" ? r : (r & 0x3) | 0x8;
@@ -51,15 +50,15 @@ export function createHabit(name: string, emoji = "🔥"): Habit {
   };
 }
 
-export function toggleCompletion(habit: Habit): Habit {
-  const today = new Date().toISOString().slice(0, 10);
-  const hasToday = habit.completions.includes(today);
+export function toggleCompletion(habit: Habit, dateISO?: string): Habit {
+  const date = dateISO || new Date().toISOString().slice(0, 10);
+  const hasDate = habit.completions.includes(date);
 
   return {
     ...habit,
-    completions: hasToday
-      ? habit.completions.filter((d) => d !== today)
-      : [...habit.completions, today],
+    completions: hasDate
+      ? habit.completions.filter((d) => d !== date)
+      : [...habit.completions, date],
   };
 }
 
